@@ -1,0 +1,50 @@
+name: proxy
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_admin:/run/caddy-admin
+
+    networks:
+      - local-network
+
+  panel:
+    build: ./panel
+    container_name: caddy-panel
+    restart: unless-stopped
+    depends_on:
+      - caddy
+    ports:
+      - "127.0.0.1:2020:2020"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_admin:/run/caddy-admin
+      - panel_data:/data
+    networks:
+      - local-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:2020/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  caddy_data:
+  caddy_config:
+  caddy_admin:
+  panel_data:
+
+networks:
+  local-network:
+    name: local-network

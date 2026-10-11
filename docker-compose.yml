@@ -1,0 +1,8 @@
+name: tools
+
+include:
+  - ./proxy/docker-compose.yml
+  - ./mailpit/docker-compose.yml
+  - ./jenkins/docker-compose.yml
+  - ./sonar/docker-compose.yml
+  - ./sonar/panel/compose.yaml

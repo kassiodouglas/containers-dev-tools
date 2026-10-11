@@ -1,0 +1,44 @@
+# Gerenciado pelo painel Local Proxy.
+{
+    admin unix//run/caddy-admin/admin.sock
+}
+
+http://app-fileshare.localhost {
+    reverse_proxy host.docker.internal:5213
+}
+
+http://app-minio.localhost {
+    reverse_proxy host.docker.internal:9001
+}
+
+http://app-starter.localhost {
+    reverse_proxy host.docker.internal:8088
+}
+
+http://hosts.localhost {
+    reverse_proxy caddy-panel:2020
+}
+
+http://jenkins.localhost {
+    reverse_proxy host.docker.internal:8765
+}
+
+http://keycloak.localhost {
+    reverse_proxy host.docker.internal:9090
+}
+
+http://mail.localhost {
+    reverse_proxy host.docker.internal:8025
+}
+
+http://mvp-controle-materiais.localhost {
+    reverse_proxy host.docker.internal:3000
+}
+
+http://sonar.localhost {
+    reverse_proxy host.docker.internal:9002
+}
+
+http://sonar-panel.localhost {
+    reverse_proxy host.docker.internal:3100
+}

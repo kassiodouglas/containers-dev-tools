@@ -1,0 +1,13 @@
+services:
+  mailpit:
+    image: axllent/mailpit:v1.30.0
+    container_name: mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    volumes:
+      - mailpit_data:/data
+    restart: unless-stopped
+
+volumes:
+  mailpit_data:

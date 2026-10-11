@@ -1,0 +1,42 @@
+.route-icon {
+  position: relative;
+}
+
+.route-icon::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: #77847d;
+}
+
+.route-icon.online::after {
+  background: #6fce91;
+  box-shadow: 0 0 0 2px #6fce9120;
+}
+
+.route-icon.offline::after {
+  background: #e27968;
+}
+
+.route-icon.checking::after {
+  background: #d7aa68;
+  animation: status-pulse 1.2s ease-in-out infinite;
+}
+
+.route-icon.pending::after,
+.route-icon.unknown::after {
+  background: #89968f;
+}
+
+.route-icon.disabled::after {
+  background: #59645e;
+}
+
+@keyframes status-pulse {
+  50% { opacity: .35; }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1412">
+  <title>Local Proxy · Rotas</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/status.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Local Proxy, início"><span class="brand-icon">↗</span><span>Local Proxy<small>SEU AMBIENTE LOCAL</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <a class="nav-item" href="/" aria-current="page"><span>⇄</span> Rotas de acesso <span class="nav-count" id="nav-count">—</span></a>
+    <div class="sidebar-bottom"><span class="caddy-mark">C</span><div>Powered by Caddy<small>Um endereço para cada projeto.</small></div></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>Workspace <span class="breadcrumb">/</span> <strong>Rotas de acesso</strong></span><span class="local-badge"><span class="dot"></span> Ambiente local</span></header>
+    <div class="content">
+      <section class="page-heading"><div><div class="eyebrow">MENOS PORTAS. MAIS CLAREZA.</div><h1>Seus projetos, por nome.</h1><p>Configure os endereços que conectam você às suas aplicações.</p></div><button class="button primary" id="add-route" disabled><span aria-hidden="true">＋</span> Nova rota</button></section>
+      <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+      <section class="stats" aria-label="Resumo do proxy">
+        <div class="stat"><span class="stat-label">Rotas cadastradas</span><strong id="total-count">—</strong><span class="stat-note">Seus endereços em um só lugar</span></div>
+        <div class="stat"><span class="stat-label">Rotas ativas</span><strong id="active-count">—</strong><span class="stat-note"><span class="dot"></span> Habilitadas na configuração</span></div>
+        <div class="stat status-stat"><span class="stat-label">Conexão com o Caddy</span><strong id="caddy-status" class="status-text">Verificando…</strong><span class="stat-note" id="caddy-note">Consultando o proxy local</span></div>
+      </section>
+      <section class="routes-panel" aria-labelledby="routes-title">
+        <div class="panel-heading"><div><h2 id="routes-title">Rotas de acesso</h2><p>Um domínio amigável para cada serviço.</p></div><label class="search" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar domínio ou destino…" aria-label="Buscar domínio ou destino" autocomplete="off" spellcheck="false"></label></div>
+        <div class="table-scroll"><table><thead><tr><th>DOMÍNIO LOCAL</th><th>DESTINO</th><th>ATIVA</th><th class="actions-heading">AÇÕES</th></tr></thead><tbody id="route-list"></tbody></table></div>
+        <div id="empty" class="empty" hidden><div class="empty-icon">⇄</div><h3 id="empty-title">Nenhuma rota por aqui.</h3><p id="empty-description">Adicione seu primeiro projeto para começar.</p></div>
+        <div id="loading" class="loading">Carregando suas rotas…</div>
+        <div class="panel-footer"><span id="draft-status">Carregando configuração</span><div class="footer-actions"><button class="button subtle" id="reload" disabled>Recarregar</button><button class="button secondary" id="preview" disabled>Ver Caddyfile</button><button class="button primary" id="save" disabled>Salvar e aplicar <span aria-hidden="true">↗</span></button></div></div>
+      </section>
+      <aside class="tip"><span class="tip-icon" aria-hidden="true">i</span><div><strong>Localhost, do seu jeito.</strong><p>Use domínios como <code>meu-app.localhost</code> e o destino <code>host.docker.internal:8080</code> para acessar uma aplicação na sua máquina. Para containers na mesma rede, use <code>nome-container:porta</code>.</p></div></aside>
+      <footer class="page-footer"><span>LOCAL PROXY <span class="footer-dot">·</span> CADDY</span><span>Feito para o seu fluxo de desenvolvimento.</span></footer>
+    </div>
+  </main>
+  <dialog id="route-dialog" aria-labelledby="dialog-title">
+    <form id="route-form">
+      <div class="dialog-heading"><div><div class="eyebrow">CONEXÕES LOCAIS</div><h2 id="dialog-title">Nova rota</h2></div><button type="button" class="icon-button close-dialog" aria-label="Fechar">×</button></div>
+      <p class="dialog-description">Dê um endereço fácil de lembrar à sua aplicação.</p>
+      <label class="field">Domínio local<div class="input-prefix"><span>http://</span><input id="domain" name="domain" placeholder="meu-app.localhost" required maxlength="253" autocomplete="off" spellcheck="false"></div><small>Somente o domínio, sem protocolo, porta ou caminho.</small></label>
+      <label class="field">Destino<input id="upstream" name="upstream" placeholder="host.docker.internal:8080" required maxlength="260" autocomplete="off" spellcheck="false"><small>Endereço do serviço e a porta em que ele está escutando.</small></label>
+      <label class="enabled-field"><input type="checkbox" id="enabled" checked> Habilitar esta rota</label>
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-footer"><button type="button" class="button secondary close-dialog">Cancelar</button><button type="submit" class="button primary">Confirmar rota</button></div>
+    </form>
+  </dialog>
+  <dialog id="preview-dialog" class="preview-dialog" aria-labelledby="preview-title"><div class="dialog-heading"><div><div class="eyebrow">CONFIGURAÇÃO</div><h2 id="preview-title">Seu Caddyfile</h2></div><button class="icon-button close-dialog" aria-label="Fechar">×</button></div><p class="dialog-description">Prévia das rotas da tela. Para aplicar as alterações, use “Salvar e aplicar”.</p><pre id="config-preview" tabindex="0"></pre><div class="dialog-footer"><button class="button secondary close-dialog">Fechar</button></div></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-heading"><h2 id="confirm-title">Confirmar ação</h2></div><p class="dialog-description" id="confirm-description"></p><div class="dialog-footer"><button class="button secondary" id="confirm-cancel">Cancelar</button><button class="button primary" id="confirm-ok">Confirmar</button></div></dialog>
+</body>
+</html>
