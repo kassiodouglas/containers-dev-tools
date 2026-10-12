@@ -6,3 +6,5 @@ include:
   - ./jenkins/docker-compose.yml
   - ./sonar/docker-compose.yml
   - ./sonar/panel/compose.yaml
+  - ./redis/docker-compose.yml
+  - ./bugs/docker-compose.yml

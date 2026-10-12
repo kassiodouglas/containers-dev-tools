@@ -3,42 +3,50 @@
     admin unix//run/caddy-admin/admin.sock
 }
 
-http://app-fileshare.localhost {
-    reverse_proxy host.docker.internal:5213
+http://app-docs.localhost {
+    reverse_proxy host.docker.internal:7852
 }
 
-http://app-minio.localhost {
+http://app-economico.localhost {
     reverse_proxy host.docker.internal:9001
 }
 
-http://app-starter.localhost {
-    reverse_proxy host.docker.internal:8088
+http://app-litwo-central.localhost {
+    reverse_proxy host.docker.internal:8526
+}
+
+http://app-litwo-edge.localhost {
+    reverse_proxy host.docker.internal:5000
+}
+
+http://app-litwo-one.localhost {
+    reverse_proxy host.docker.internal:8766
+}
+
+http://app-me-organize.localhost {
+    reverse_proxy host.docker.internal:8000
+}
+
+http://app-starter-litwo.localhost {
+    reverse_proxy host.docker.internal:6894
 }
 
 http://hosts.localhost {
     reverse_proxy caddy-panel:2020
 }
 
-http://jenkins.localhost {
-    reverse_proxy host.docker.internal:8765
-}
-
-http://keycloak.localhost {
-    reverse_proxy host.docker.internal:9090
+http://logs.localhost {
+    reverse_proxy host.docker.internal:9087
 }
 
 http://mail.localhost {
     reverse_proxy host.docker.internal:8025
 }
 
-http://mvp-controle-materiais.localhost {
-    reverse_proxy host.docker.internal:3000
+http://site-economico.localhost {
+    reverse_proxy host.docker.internal:8754
 }
 
-http://sonar.localhost {
-    reverse_proxy host.docker.internal:9002
-}
-
-http://sonar-panel.localhost {
-    reverse_proxy host.docker.internal:3100
+http://status.localhost {
+    reverse_proxy host.docker.internal:3001
 }

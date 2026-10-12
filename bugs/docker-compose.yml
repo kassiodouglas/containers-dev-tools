@@ -1,0 +1,15 @@
+services:
+  bugs:
+    container_name: bugs 
+    image: ghcr.io/edde746/bugs:latest
+    restart: unless-stopped
+    ports:
+      - "9087:9000"
+    volumes:
+      - bugs-data:/data
+    environment:
+      BUGS_AUTH__ADMIN_TOKEN: ${BUGS_ADMIN_TOKEN}
+      BUGS_RETENTION_DAYS: "90"
+
+volumes:
+  bugs-data:
